@@ -17,12 +17,16 @@ In order to make the application work, it will be necessary to have the [docker]
 The repository will need to be cloned.
 
 ```
-git clone ######
+git clone https://github.com/alvarofelipems/closestEstablishment
 ```
 
 ### 2. Runing:
 
-Inside the dir where the project was cloned it is necessary to run the command.
+Inside the dir where the project was cloned it is necessary to run both commands
+
+```
+./application install
+```
 
 ```
 ./application start
