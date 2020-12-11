@@ -5,7 +5,7 @@ var Data = require('../../Data.js');
 
 const { MongoClient } = require("mongodb");
 
-app.database = 'zedelivery_teste';
+app.database = app.database + '_teste';
 
 var data = {
   validJson: Data(0),
