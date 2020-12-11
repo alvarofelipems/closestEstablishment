@@ -22,7 +22,7 @@ case $1 in
   "start")
     docker-compose up -d --no-deps
     ;;
-  "test") docker-compose run api bash -c "npm install && npm run test";;
+  "test") docker-compose run api bash -c "npm install && npm install tape -g && npm run test";;
   "populate") docker-compose run api bash -c "npm install && npm run populate";;
   "prod") docker-compose up webserver_api ;;
   "stop") docker-compose down;;
