@@ -7,7 +7,7 @@
     "start": "node index.js",
     "dev": "node-dev index.js",
     "test": "tape tests/*/*.js",
-    "populate": "node populate.js"
+    "seeding": "node seeding.js"
   },
   "author": "",
   "license": "ISC",
