@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  api:
+    image: node
+    working_dir: /home/node/app
+    volumes:
+      - ./api/:/home/node/app/
+      - ./infra/api/.env:/home/node/app/.env
+      - ./storage/:/home/node/app/storage/
+    environment:
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+
+    networks:
+      - api-network
+      - mongo-network
+    depends_on:
+      - mongo
+    deploy:
+      mode: replicated
+      replicas: ${INSTANCES}
+    restart: always
+    command: bash -c "npm install && npm ${NPM_START}"
+
+  webserver_api:
+    image: nginx
+    volumes:
+      - ./infra/nginx/conf.d/api.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - api
+    ports:
+      - "${API_PORT}:80"
+    networks:
+      - api-network
+
+  mongo:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASS}
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./infra/mongodb/data:/data/db
+    networks:
+      - mongo-network
+
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_BASICAUTH_USERNAME: mongo
+      ME_CONFIG_BASICAUTH_PASSWORD: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${DB_USER}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${DB_PASS}
+    links:
+      - mongo
+    networks:
+      - mongo-network
+
+  web:
+    image: node
+    working_dir: /home/node/app
+    volumes:
+      - ./web/:/home/node/app/
+      - ./infra/web/.env:/home/node/app/.env
+    environment:
+      API_URI: "${API_HOST}:${API_PORT}/api/partners"
+      MAPS_KEY: ${MAPS_KEY}
+
+    deploy:
+      mode: replicated
+      replicas: ${INSTANCES}
+    command: bash -c "npm install && npm ${NPM_START}"
+
+  webserver_web:
+    image: nginx
+    volumes:
+      - ./infra/nginx/conf.d/web.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "${WEB_PORT}:80"
+
+networks:
+  api-network:
+    driver: bridge
+  mongo-network:
+    driver: bridge
