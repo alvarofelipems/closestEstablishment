@@ -20,6 +20,7 @@ case $1 in
   "install")
     initAllEnv
     docker-compose run api bash -c "npm install"
+    docker-compose run web bash -c "npm install"
     ;;
   "start")
     docker-compose up -d
