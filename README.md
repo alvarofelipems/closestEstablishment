@@ -4,6 +4,8 @@
 Given a specific geographic position the service will search for on the database
 the establishments which are able to cover the area and find the one closer to it.
 
+> You can see a demo [here](http://ec2-52-54-128-153.compute-1.amazonaws.com/).
+
 ## Requirements
 
 In this project was used the idea of containers in order to isolate each service of application so it would become possible to run inside the local area and also according to the dev and prod environment with the closest experience possible.
@@ -107,7 +109,7 @@ NGINX was used to receive users requests and load balancing across multiple inst
 
 Front-end application to consum the API.
 
-### Webserver API
+### Webserver WEB
 
 The same thing as Webserver API, but for WEB
 
@@ -121,8 +123,6 @@ Once you want to turn off everything that has been running in your machine, you 
 ```
 
 
-
 ## If you love Postman ❤️
-
 
 You can download the collection [here](https://www.postman.com/collections/e5f281994138a13a156f)
